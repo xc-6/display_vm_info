@@ -1,0 +1,16 @@
+[
+    {
+        "client_name": "Test_VM",
+        "client_ip_address": "192.168.1.1",
+        "client_mac_address": "00:11:22:33:44:55",
+        "client_request_time": "2024-12-19T16:00:00",
+        "server_record_time": "2024-12-19 16:50:15"
+    },
+    {
+        "client_name": "Test_VM",
+        "client_ip_address": "192.168.1.1",
+        "client_mac_address": "00:11:22:33:44:55",
+        "client_request_time": "2024-12-19T16:00:00",
+        "server_record_time": "2024-12-19 16:50:20"
+    }
+]
