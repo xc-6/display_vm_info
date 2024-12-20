@@ -64,17 +64,28 @@ def index():
         client_mac_address = data.get('client_mac_address')
         client_request_time = data.get('client_request_time')
 
-        # Add the new request to history
-        request_history.append({
-            'client_name': client_name,
-            'client_ip_address': client_ip_address,
-            'client_mac_address': client_mac_address,
-            'client_request_time': client_request_time,
-            'server_record_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        })
+        exists = False
+        # Look for matching MAC address to update.
+        for req in request_history:
+            if req['client_mac_address'] == client_mac_address:
+                req['client_ip_address'] = client_ip_address
+                req['client_name'] = client_name
+                req['client_request_time'] = client_request_time
+                req['server_record_time'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                exists = True
+                break
 
-        request_history.sort(key=lambda x: datetime.strptime(x['client_request_time'], '%Y-%m-%dT%H:%M:%S'), reverse=True)
+        if not exists:
+            # Add the new request to history
+            request_history.append({
+                'client_name': client_name,
+                'client_ip_address': client_ip_address,
+                'client_mac_address': client_mac_address,
+                'client_request_time': client_request_time,
+                'server_record_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            })
 
+        request_history.sort(key=lambda x: datetime.strptime(x['server_record_time'], '%Y-%m-%d %H:%M:%S'), reverse=True)
         # Save the updated request history to file
         save_request_history()
 
