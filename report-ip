@@ -1,0 +1,22 @@
+#!/usr/bin/bash
+# This script will post the json document with the client info for the application.
+# Run this at boot by modifying your crontab.
+# Note that you will have to customize the method for parsing out the MAC address
+# for your particular system. This works for an Ubuntu 22 system with ifconfig installed.
+
+CLIENT_NAME=$(hostname)
+CLIENT_IP_ADDRESS=$(hostname -I | awk '{print $1}')
+CLIENT_MAC_ADDRESS=$(/usr/sbin/ifconfig ens3 | /usr/bin/awk '/ether/ {print $2}')
+TIMESTAMP=$(date "+%Y-%m-%dT%H:%M:%S")
+
+cat << EOF > post_vm_info.json
+{
+"client_name":"$CLIENT_NAME",
+"client_ip_address":"$CLIENT_IP_ADDRESS",
+"client_mac_address":"$CLIENT_MAC_ADDRESS",
+"client_request_time":"$TIMESTAMP"
+}
+EOF
+
+echo $CLIENT_NAME $CLIENT_IP_ADDRESS $CLIENT_MAC_ADDRESS $TIMESTAMP
+curl -X POST -H "Content-Type: application/json" -d "@post_vm_info.json" http://<YOUR SERVER IP or FQDN>/post_vm_info
