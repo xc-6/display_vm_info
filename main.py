@@ -11,6 +11,15 @@ template = '''
 <html>
 <head>
     <title>Request History</title>
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                alert('Copied to clipboard');
+            }, function(err) {
+                console.error('Could not copy text: ', err);
+            });
+        }
+    </script>
 </head>
 <body>
     <h1>Request History</h1>
@@ -25,7 +34,7 @@ template = '''
         {% for req in request_history %}
         <tr>
             <td>{{ req.client_name }}</td>
-            <td>{{ req.client_ip_address }}</td>
+            <td>{{ req.client_ip_address }} <button onclick="copyToClipboard('{{ req.client_ip_address }}')">Copy</button></td>
             <td>{{ req.client_mac_address }}</td>
             <td>{{ req.client_request_time }}</td>
             <td>{{ req.server_record_time }}</td>
